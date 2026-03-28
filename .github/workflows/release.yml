@@ -1,0 +1,80 @@
+name: Release ZIP
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+env:
+  RESOURCE_NAME: lb-app-where-are-you
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: src/ui/package-lock.json
+
+      - name: Install UI dependencies
+        working-directory: src/ui
+        run: npm ci
+
+      - name: Build UI
+        working-directory: src/ui
+        run: npm run build
+
+      - name: Assemble release files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          package_root="release/${RESOURCE_NAME}"
+
+          rm -rf release
+          mkdir -p "${package_root}/client"
+          mkdir -p "${package_root}/server"
+          mkdir -p "${package_root}/locales"
+          mkdir -p "${package_root}/ui/dist"
+
+          cp src/fxmanifest.lua "${package_root}/fxmanifest.lua"
+          cp src/config.lua "${package_root}/config.lua"
+          cp src/sql.sql "${package_root}/sql.sql"
+
+          rsync -a --include '*/' --include '*.lua' --exclude '*' src/client/ "${package_root}/client/"
+          rsync -a --include '*/' --include '*.lua' --exclude '*' src/server/ "${package_root}/server/"
+          rsync -a --include '*/' --include '*.json' --exclude '*' src/locales/ "${package_root}/locales/"
+
+          cp -R src/ui/dist/. "${package_root}/ui/dist/"
+
+      - name: Create ZIP archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive_name="${RESOURCE_NAME}-${GITHUB_REF_NAME}.zip"
+          cd release
+          zip -r "../${archive_name}" "${RESOURCE_NAME}"
+
+      - name: Create or update GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive_name="${RESOURCE_NAME}-${GITHUB_REF_NAME}.zip"
+
+          if gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1; then
+            gh release upload "${GITHUB_REF_NAME}" "${archive_name}" --clobber
+          else
+            gh release create "${GITHUB_REF_NAME}" "${archive_name}" --title "${GITHUB_REF_NAME}" --generate-notes
+          fi

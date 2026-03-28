@@ -1,0 +1,267 @@
+{
+  "tab": {
+    "map": "地図",
+    "timeline": "タイムライン",
+    "friends": "友達",
+    "groups": "グループ",
+    "settings": "設定"
+  },
+  "header": {
+    "subtitle_active": "フレンド位置共有",
+    "subtitle_consent": "初回設定"
+  },
+  "map": {
+    "self_label": "自分",
+    "recenter_btn": "現在地",
+    "post_pin_label": "投稿: {name}"
+  },
+  "consent": {
+    "title": "位置共有の同意",
+    "body": "このアプリはフレンドとリアルタイムで位置を共有します。",
+    "item_1": "通常は共有オンです",
+    "item_2": "モード切替でいつでも調整できます",
+    "item_3": "{mode}で即時停止できます",
+    "agree_btn": "同意して始める"
+  },
+  "ghost": {
+    "sheet_title": "ゴーストモード設定",
+    "section_global": "全体",
+    "section_friends": "フレンド",
+    "section_groups": "グループ",
+    "all_friends": "フレンド全員",
+    "mode": {
+      "normal": "GPSモード",
+      "blur": "基地局モード",
+      "freeze": "圏外モード",
+      "off": "自閉モード"
+    }
+  },
+  "btn": {
+    "close": "閉じる",
+    "cancel": "キャンセル"
+  },
+  "common": {
+    "online": "オンライン",
+    "offline": "オフライン"
+  },
+  "friends": {
+    "title": "フレンド",
+    "add_btn": "+追加",
+    "empty": "フレンドがまだいません",
+    "blocked_status": "ブロック中 / 位置情報は非表示",
+    "detail_btn": "詳細",
+    "unblock_btn": "解除",
+    "pending": {
+      "title": "申請待ち",
+      "empty": "申請はありません"
+    },
+    "accept_btn": "承認",
+    "decline_btn": "辞退"
+  },
+  "friend": {
+    "add": {
+      "title": "フレンドを追加",
+      "nearby": {
+        "title": "近くのプレイヤー",
+        "empty": "候補がいません。はじめて使う場合、規約に同意したプレーヤーのみが挙げられます。"
+      },
+      "search": {
+        "title": "ID / 名前検索",
+        "placeholder": "IDまたは名前",
+        "btn": "検索"
+      },
+      "request_btn": "申請",
+      "unblock_btn": "解除",
+      "pending_tag": "申請中",
+      "blocked_tag": "ブロック中"
+    },
+    "detail": {
+      "relation": {
+        "label": "関係:",
+        "friend": "フレンド",
+        "group_named": "グループ（{groups}）",
+        "group_member": "グループメンバー"
+      },
+      "remove": {
+        "btn": "フレンド削除",
+        "title": "{name} を削除",
+        "desc": "削除後は互いの位置共有が停止します。再度共有するには再申請が必要です。",
+        "confirm_btn": "削除する"
+      },
+      "block": {
+        "btn": "ブロック",
+        "title": "{name} をブロック",
+        "desc": "相手から自分の位置が見えなくなり、相手の位置も非表示になります。",
+        "confirm_btn": "ブロックする"
+      }
+    }
+  },
+  "groups": {
+    "title": "グループ",
+    "add_btn": "＋追加",
+    "refresh_btn": "更新",
+    "empty": "参加中のグループはありません",
+    "online_label": "オンライン",
+    "offline_label": "オフライン",
+    "people_unit": "人",
+    "leave_btn": "退出"
+  },
+  "group": {
+    "modal": {
+      "title": "グループに参加 / 作成",
+      "name_placeholder": "グループ名",
+      "password_placeholder": "パスワード（任意）",
+      "submit_btn": "参加 / 作成"
+    }
+  },
+  "timeline": {
+    "title": "タイムライン",
+    "refresh_btn": "更新",
+    "filter": {
+      "label": "表示:",
+      "all": "全員",
+      "friends": "フレンドのみ",
+      "group_prefix": "グループ: "
+    },
+    "compose_placeholder": "チェックイン投稿（任意）",
+    "post_btn": "チェックイン投稿",
+    "empty": "投稿はまだありません",
+    "no_text": "（テキストなし）",
+    "reaction_delete_btn": "削除"
+  },
+  "reaction": {
+    "modal_title": "リアクションを送信",
+    "stamp": {
+      "select_title": "絵文字を選択",
+      "change_title": "絵文字を変更",
+      "empty_label": "未"
+    },
+    "message_placeholder": "ひとこと（任意）",
+    "submit_btn": "送信"
+  },
+  "settings": {
+    "title": "設定",
+    "nearby": {
+      "notify": "近距離通知を有効化",
+      "radius": "近距離判定半径 (m)",
+      "interval": "近距離チェック間隔 (分)"
+    },
+    "save_btn": "保存",
+    "tutorial_btn": "使い方ガイドを再表示",
+    "delete_account_btn": "退会（全データ削除）"
+  },
+  "delete": {
+    "title": {
+      "account": "退会",
+      "post": "投稿を削除",
+      "reaction": "リアクションを削除"
+    },
+    "desc": {
+      "account": "退会するとすべての投稿・リアクション・フレンド・グループが削除されます。退会しますか？",
+      "generic": "削除しますか？この操作は取り消せません。"
+    },
+    "ok_btn": "OK"
+  },
+  "notify": {
+    "title": "WhereAreYou?",
+    "settings_saved": "設定を保存しました",
+    "account_deleted": "退会しました。データをすべて削除しました。",
+    "friend_request_incoming": "新しいフレンド申請が届きました",
+    "friend_request_accepted": "%s が申請を受諾しました",
+    "reaction_received_default": "%s がリアクションを送りました",
+    "defaults": {
+      "other_party": "相手",
+      "someone": "誰か"
+    },
+    "nearby": {
+      "friend_default": "フレンド",
+      "player_default": "プレイヤー",
+      "relation_friend": "フレンド",
+      "relation_group_member": "グループメンバー",
+      "distance_suffix": " (%sm)",
+      "content": "%s が近くにいます%s",
+      "content_with_relation_distance": "%s が近くにいます (%sm) [%s]"
+    },
+    "reaction": {
+      "empty": "絵文字かメッセージを入力してください",
+      "failed": "リアクション送信に失敗しました"
+    },
+    "friend_remove_failed": "フレンド削除に失敗しました",
+    "unblock_failed": "ブロック解除に失敗しました"
+  },
+  "prompt": {
+    "stamp_msg": "スタンプ（例: 👍, 🔥）"
+  },
+  "error": {
+    "group": {
+      "leave": {
+        "title": "エラー",
+        "desc": "グループ退出に失敗しました",
+        "close": "閉じる"
+      },
+      "name_required": "グループ名を入力してください",
+      "password_wrong": "パスワードが違います",
+      "join_failed": "グループ参加に失敗しました"
+    },
+    "checkin": {
+      "rate_limited": "投稿クールダウン中です。しばらく待ってください。",
+      "failed": "投稿に失敗しました"
+    },
+    "friend": {
+      "request": {
+        "target_not_online": "そのプレイヤーはオフラインです",
+        "already_friends": "すでにフレンドです",
+        "pending": "申請は保留中です",
+        "blocked": "ブロックされています",
+        "unavailable": "現在このプレイヤーには申請できません",
+        "cannot_self": "自分には申請できません",
+        "invalid": "対象プレイヤーが見つかりません",
+        "failed": "申請の送信に失敗しました"
+      }
+    }
+  },
+  "move": {
+    "vehicle": "車両移動",
+    "walk": "徒歩",
+    "idle": "静止"
+  },
+  "time": {
+    "just_now": "たった今",
+    "minutes_ago": "{n}分前",
+    "hours_ago": "{n}時間前",
+    "days_ago": "{n}日前"
+  },
+  "tutorial": {
+    "next_btn": "次へ",
+    "prev_btn": "戻る",
+    "done_btn": "始める",
+    "step1": {
+      "title": "👋 WhereAreYou? へようこそ！",
+      "desc": "このアプリはフレンドの位置をリアルタイムで確認・共有できるアプリです。<br>簡単な使い方を説明します。"
+    },
+    "step2": {
+      "title": "👻 ゴーストモード",
+      "desc": "ここをタップするとゴーストモードを切り替えられます。<br>フレンドへの自分の位置表示を「通常 / 非表示 / フリーズ / ぼかし」で制御できます。"
+    },
+    "step3": {
+      "title": "🗺️ 地図",
+      "desc": "地図上でフレンドの現在位置をリアルタイムに確認できます。<br>マーカーをタップすると詳細が表示されます。"
+    },
+    "step4": {
+      "title": "📍 タイムライン",
+      "desc": "チェックインを投稿して現在地の足跡を残せます。<br>フレンドのチェックインも確認できます。"
+    },
+    "step5": {
+      "title": "👥 友達",
+      "desc": "フレンドの追加・申請の承認・ブロック管理ができます。<br>近くにいるプレイヤーへ申請を送ることもできます。"
+    },
+    "step6": {
+      "title": "🫂 グループ",
+      "desc": "グループを作成・参加すると、グループ単位で位置共有できます。<br>地図フィルターでグループメンバーだけ表示することも可能です。"
+    },
+    "step7": {
+      "title": "⚙️ 設定",
+      "desc": "近くのフレンド通知・通知間隔などのアプリ設定や、<br>退会（データ削除）はここから行えます。"
+    }
+  }
+}

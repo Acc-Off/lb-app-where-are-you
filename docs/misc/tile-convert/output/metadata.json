@@ -1,0 +1,44 @@
+{
+  "source": {
+    "directory": "..\\minimap",
+    "files": [
+      "minimap_sea_0_0.png",
+      "minimap_sea_0_1.png",
+      "minimap_sea_1_0.png",
+      "minimap_sea_1_1.png",
+      "minimap_sea_2_0.png",
+      "minimap_sea_2_1.png"
+    ],
+    "layout": {
+      "rows": 3,
+      "cols": 2,
+      "rowIndexFromFileName": true,
+      "colIndexFromFileName": true
+    },
+    "tileWidth": 3072,
+    "tileHeight": 3072
+  },
+  "combined": {
+    "width": 6144,
+    "height": 9216,
+    "path": "combined\\minimap_combined.png",
+    "aspectRatio": "6144:9216"
+  },
+  "tiles": {
+    "tileSize": 256,
+    "layer": "render",
+    "maxZoom": 6,
+    "outputRoot": "tiles\\render"
+  },
+  "assumedWorldBounds": {
+    "topLeft": [
+      -4140,
+      8400
+    ],
+    "bottomRight": [
+      4860,
+      -5100
+    ],
+    "note": "Assumed same as Los Santos fixed URL; verify with anchor points before production use."
+  }
+}

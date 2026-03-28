@@ -1,0 +1,267 @@
+{
+  "tab": {
+    "map": "Map",
+    "timeline": "Timeline",
+    "friends": "Friends",
+    "groups": "Groups",
+    "settings": "Settings"
+  },
+  "header": {
+    "subtitle_active": "Friend Location Sharing",
+    "subtitle_consent": "Initial Setup"
+  },
+  "map": {
+    "self_label": "Me",
+    "recenter_btn": "My Location",
+    "post_pin_label": "Post: {name}"
+  },
+  "consent": {
+    "title": "Location Sharing Consent",
+    "body": "This app shares your location with friends in real time.",
+    "item_1": "Sharing is on by default",
+    "item_2": "You can adjust it at any time by switching modes",
+    "item_3": "Use {mode} to stop sharing immediately",
+    "agree_btn": "Agree & Start"
+  },
+  "ghost": {
+    "sheet_title": "Ghost Mode Settings",
+    "section_global": "Global",
+    "section_friends": "Friends",
+    "section_groups": "Groups",
+    "all_friends": "All Friends",
+    "mode": {
+      "normal": "GPS Mode",
+      "blur": "Cell Tower Mode",
+      "freeze": "Off Grid Mode",
+      "off": "Ghost Mode"
+    }
+  },
+  "btn": {
+    "close": "Close",
+    "cancel": "Cancel"
+  },
+  "common": {
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "friends": {
+    "title": "Friends",
+    "add_btn": "+ Add",
+    "empty": "You have no friends yet",
+    "blocked_status": "Blocked / Location hidden",
+    "detail_btn": "Details",
+    "unblock_btn": "Unblock",
+    "pending": {
+      "title": "Pending Requests",
+      "empty": "No pending requests"
+    },
+    "accept_btn": "Accept",
+    "decline_btn": "Decline"
+  },
+  "friend": {
+    "add": {
+      "title": "Add Friend",
+      "nearby": {
+        "title": "Nearby Players",
+        "empty": "No candidates found. On first use, only players who have agreed to the terms will appear."
+      },
+      "search": {
+        "title": "Search by ID / Name",
+        "placeholder": "ID or name",
+        "btn": "Search"
+      },
+      "request_btn": "Request",
+      "unblock_btn": "Unblock",
+      "pending_tag": "Pending",
+      "blocked_tag": "Blocked"
+    },
+    "detail": {
+      "relation": {
+        "label": "Relation:",
+        "friend": "Friend",
+        "group_named": "Group ({groups})",
+        "group_member": "Group Member"
+      },
+      "remove": {
+        "btn": "Remove Friend",
+        "title": "Remove {name}",
+        "desc": "Location sharing with this player will stop. You will need to send a new request to share again.",
+        "confirm_btn": "Remove"
+      },
+      "block": {
+        "btn": "Block",
+        "title": "Block {name}",
+        "desc": "They will no longer see your location, and you will no longer see theirs.",
+        "confirm_btn": "Block"
+      }
+    }
+  },
+  "groups": {
+    "title": "Groups",
+    "add_btn": "+ Add",
+    "refresh_btn": "Refresh",
+    "empty": "You are not in any groups",
+    "online_label": "Online",
+    "offline_label": "Offline",
+    "people_unit": "",
+    "leave_btn": "Leave"
+  },
+  "group": {
+    "modal": {
+      "title": "Join / Create Group",
+      "name_placeholder": "Group name",
+      "password_placeholder": "Password (optional)",
+      "submit_btn": "Join / Create"
+    }
+  },
+  "timeline": {
+    "title": "Timeline",
+    "refresh_btn": "Refresh",
+    "filter": {
+      "label": "Show:",
+      "all": "Everyone",
+      "friends": "Friends only",
+      "group_prefix": "Group: "
+    },
+    "compose_placeholder": "Check-in message (optional)",
+    "post_btn": "Post Check-in",
+    "empty": "No posts yet",
+    "no_text": "(no text)",
+    "reaction_delete_btn": "Delete"
+  },
+  "reaction": {
+    "modal_title": "Send Reaction",
+    "stamp": {
+      "select_title": "Select emoji",
+      "change_title": "Change emoji",
+      "empty_label": "—"
+    },
+    "message_placeholder": "Add a message (optional)",
+    "submit_btn": "Send"
+  },
+  "settings": {
+    "title": "Settings",
+    "nearby": {
+      "notify": "Enable nearby notification",
+      "radius": "Nearby detection radius (m)",
+      "interval": "Nearby check interval (min)"
+    },
+    "save_btn": "Save",
+    "tutorial_btn": "Show Tutorial Again",
+    "delete_account_btn": "Delete Account (all data)"
+  },
+  "delete": {
+    "title": {
+      "account": "Delete Account",
+      "post": "Delete Post",
+      "reaction": "Delete Reaction"
+    },
+    "desc": {
+      "account": "Deleting your account will remove all posts, reactions, friends, and groups. Are you sure?",
+      "generic": "Are you sure? This action cannot be undone."
+    },
+    "ok_btn": "OK"
+  },
+  "notify": {
+    "title": "WhereAreYou?",
+    "settings_saved": "Settings saved",
+    "account_deleted": "Account deleted. All data has been removed.",
+    "friend_request_incoming": "You have a new friend request",
+    "friend_request_accepted": "%s accepted your request",
+    "reaction_received_default": "%s sent a reaction",
+    "defaults": {
+      "other_party": "Other player",
+      "someone": "Someone"
+    },
+    "nearby": {
+      "friend_default": "Friend",
+      "player_default": "Player",
+      "relation_friend": "Friend",
+      "relation_group_member": "Group Member",
+      "distance_suffix": " (%sm)",
+      "content": "%s is nearby%s",
+      "content_with_relation_distance": "%s is nearby (%sm) [%s]"
+    },
+    "reaction": {
+      "empty": "Please enter an emoji or message",
+      "failed": "Failed to send reaction"
+    },
+    "friend_remove_failed": "Failed to remove friend",
+    "unblock_failed": "Failed to unblock"
+  },
+  "prompt": {
+    "stamp_msg": "Enter a stamp (e.g. 👍, 🔥)"
+  },
+  "error": {
+    "group": {
+      "leave": {
+        "title": "Error",
+        "desc": "Failed to leave group",
+        "close": "Close"
+      },
+      "name_required": "Please enter a group name",
+      "password_wrong": "Incorrect password",
+      "join_failed": "Failed to join group"
+    },
+    "checkin": {
+      "rate_limited": "Post cooldown active. Please wait a moment.",
+      "failed": "Failed to post"
+    },
+    "friend": {
+      "request": {
+        "target_not_online": "That player is offline",
+        "already_friends": "Already friends",
+        "pending": "Request is pending",
+        "blocked": "You are blocked",
+        "unavailable": "Cannot send a request to this player right now",
+        "cannot_self": "You cannot send a request to yourself",
+        "invalid": "Target player not found",
+        "failed": "Failed to send request"
+      }
+    }
+  },
+  "move": {
+    "vehicle": "In vehicle",
+    "walk": "Walking",
+    "idle": "Stationary"
+  },
+  "time": {
+    "just_now": "Just now",
+    "minutes_ago": "{n}m ago",
+    "hours_ago": "{n}h ago",
+    "days_ago": "{n}d ago"
+  },
+  "tutorial": {
+    "next_btn": "Next",
+    "prev_btn": "Back",
+    "done_btn": "Start",
+    "step1": {
+      "title": "👋 Welcome to WhereAreYou?",
+      "desc": "This app lets you check and share friend locations in real time.<br>Here is a quick overview."
+    },
+    "step2": {
+      "title": "👻 Ghost Mode",
+      "desc": "Tap here to toggle Ghost Mode.<br>Control how your location appears to friends: Normal / Hidden / Frozen / Blurred."
+    },
+    "step3": {
+      "title": "🗺️ Map",
+      "desc": "See where your friends are in real time on the map.<br>Tap a marker to view details."
+    },
+    "step4": {
+      "title": "📍 Timeline",
+      "desc": "Post check-ins to leave a trail of where you have been.<br>You can also see your friends' check-ins."
+    },
+    "step5": {
+      "title": "👥 Friends",
+      "desc": "Add friends, accept requests, and manage blocks.<br>You can also send requests to nearby players."
+    },
+    "step6": {
+      "title": "🫂 Groups",
+      "desc": "Create or join groups to share locations within the group.<br>You can filter the map to show only group members."
+    },
+    "step7": {
+      "title": "⚙️ Settings",
+      "desc": "Configure nearby friend notifications, intervals, and other settings.<br>You can also delete your account here."
+    }
+  }
+}
