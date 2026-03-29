@@ -91,6 +91,16 @@ function PlayersRepo.setConsent(playerId, _agreedAt)
     ]], { playerId, Const.GHOST_NORMAL })
 end
 
+-- 同意フラグを取り消す（アプリアンインストール時に使用）。
+-- agreed_at を NULL に戻し、再インストール時に規約への再同意を求める。
+function PlayersRepo.clearConsent(playerId)
+    Repo.execute([[
+        UPDATE locshare_players
+        SET agreed_at = NULL, updated_at = CURRENT_TIMESTAMP
+        WHERE player_id = ?
+    ]], { playerId })
+end
+
 -- 複数プレイヤーの表示名を { [playerId] = displayName } マップで返す。
 function PlayersRepo.getProfileNameMap(playerIds)
     local map = {}

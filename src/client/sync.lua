@@ -13,6 +13,11 @@ function Sync.startLoop()
     CreateThread(function()
         while true do
             -- 規約未同意の場合はサーバーへ位置情報を送信しない。
+            -- consentGiven は以下のタイミングで false になり、送信が停止する。
+            --   1. アプリ起動時 bootstrap レスポンスで未同意と判明したとき
+            --   2. アプリのアンインストール時（onDelete コールバック）
+            -- アンインストール時は DB の agreed_at も NULL に戻されるため、
+            -- サーバー再起動・プレイヤー再接続後も未同意状態が維持される（送信停止が永続化）。
             if State.consentGiven then
                 local selfPosition = Bridge.getCurrentPosition()
                 TriggerServerEvent('whereareyou:server:updatePosition', selfPosition)

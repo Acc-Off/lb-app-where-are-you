@@ -45,6 +45,15 @@ function App.addCustomApp()
         onClose = function()
             State.appIsOpen = false
         end,
+
+        -- アンインストール時に同意フラグをリセットし、位置情報送信を即時停止する。
+        -- あわせてサーバーへ uninstallApp を送信し、DB の agreed_at を NULL に戻す。
+        -- これによりサーバー再起動・プレイヤー再接続後も未同意状態が維持され、
+        -- 送信停止状態が永続化される。再インストール時は規約への再同意が必要になる。
+        onDelete = function()
+            State.consentGiven = false
+            Bridge.callServer('uninstallApp', {})
+        end,
     })
 
     if not added then

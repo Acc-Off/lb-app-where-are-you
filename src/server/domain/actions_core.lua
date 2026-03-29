@@ -45,6 +45,21 @@ Actions.bootstrap = function(playerSource)
     }
 end
 
+-- アプリのアンインストールを処理する。
+-- クライアント側では onDelete コールバックで consentGiven が即 false になり送信が停止する。
+-- サーバー側では agreed_at を NULL に戻すことで、再接続・再起動後も未同意状態を維持し、
+-- 送信停止状態を永続化する。再インストール時は規約への再同意が必要になる。
+Actions.uninstallApp = function(_, playerId)
+    local Helpers = Server.RequestHelpers
+    RepoV2.PlayersRepo.clearConsent(playerId)
+    local _, state = Helpers.ensureRuntimeState(nil, playerId)
+    if state then
+        state.consentKnown = true
+        state.consent = false
+    end
+    return true, { uninstalled = true }
+end
+
 -- 利用規約への同意を記録する。DB へ保存し、ランタイムキャッシュも即座に更新する。
 Actions.agreeConsent = function(_, playerId)
     local Helpers = Server.RequestHelpers
