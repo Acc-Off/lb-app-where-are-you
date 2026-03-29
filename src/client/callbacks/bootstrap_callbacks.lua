@@ -25,6 +25,8 @@ local function applyAppSettings(settings)
 end
 
 -- 初期起動: lb-phone 起動待ち後にアプリ登録する。
+-- consentGiven の既定値は false のため、ループは即時開始してよい。
+-- 同意状態はアプリ起動時の bootstrap レスポンスで更新され、その後から送信が始まる。
 CreateThread(function()
     while GetResourceState('lb-phone') ~= 'started' do
         Wait(500)

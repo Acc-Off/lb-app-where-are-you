@@ -8,15 +8,18 @@ local Bridge = Client.Bridge
 local locale = locale
 
 -- 定期同期スレッドを開始する。
--- 座標送信は常時行い、表示中のみUIへ現在地を反映する。
+-- 座標送信は規約に同意済みの場合のみ行い、表示中のみUIへ現在地を反映する。
 function Sync.startLoop()
     CreateThread(function()
         while true do
-            local selfPosition = Bridge.getCurrentPosition()
-            TriggerServerEvent('whereareyou:server:updatePosition', selfPosition)
+            -- 規約未同意の場合はサーバーへ位置情報を送信しない。
+            if State.consentGiven then
+                local selfPosition = Bridge.getCurrentPosition()
+                TriggerServerEvent('whereareyou:server:updatePosition', selfPosition)
 
-            if State.appIsOpen then
-                Bridge.sendAppMessage('selfPosition', selfPosition)
+                if State.appIsOpen then
+                    Bridge.sendAppMessage('selfPosition', selfPosition)
+                end
             end
 
             Wait(Config.PositionPushIntervalMs or 2000)
