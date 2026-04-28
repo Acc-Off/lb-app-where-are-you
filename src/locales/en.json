@@ -1,11 +1,4 @@
 {
-  "tab": {
-    "map": "Map",
-    "timeline": "Timeline",
-    "friends": "Friends",
-    "groups": "Groups",
-    "settings": "Settings"
-  },
   "header": {
     "subtitle_active": "Friend Location Sharing",
     "subtitle_consent": "Initial Setup"

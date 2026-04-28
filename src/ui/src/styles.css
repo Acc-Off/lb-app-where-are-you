@@ -273,9 +273,6 @@ body {
 }
 
 .tabbar {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
     background: var(--bg-surface);
     border: 1px solid var(--line);
     border-radius: 12px;
@@ -284,8 +281,9 @@ body {
 
 .tabbar-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    gap: 4px;
 }
 
 .group-form {
@@ -517,9 +515,11 @@ body {
     color: var(--ink-secondary);
     border-radius: 8px;
     padding: 8px;
-    font-size: 12px;
-    font-weight: 700;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .tabbar button.active {

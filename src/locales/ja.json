@@ -1,11 +1,4 @@
 {
-  "tab": {
-    "map": "地図",
-    "timeline": "タイムライン",
-    "friends": "友達",
-    "groups": "グループ",
-    "settings": "設定"
-  },
   "header": {
     "subtitle_active": "フレンド位置共有",
     "subtitle_consent": "初回設定"
