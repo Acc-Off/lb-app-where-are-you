@@ -25,8 +25,9 @@ local function applyAppSettings(settings)
 end
 
 -- 初期起動: lb-phone 起動待ち後にアプリ登録する。
--- consentGiven の既定値は false のため、ループは即時開始してよい。
--- 同意状態はアプリ起動時の bootstrap レスポンスで更新され、その後から送信が始まる。
+-- ループ開始前にサーバーから同意状態を取得する。
+-- これにより、既同意ユーザーはアプリを開く前からログイン直後に位置情報の送信が始まる。
+-- （consentGiven の既定値は false のため、取得前はループが回っても送信は行われない）
 CreateThread(function()
     while GetResourceState('lb-phone') ~= 'started' do
         Wait(500)
@@ -35,6 +36,14 @@ CreateThread(function()
     Wait(1000)
     App.addCustomApp()
     Sync.startLoop()
+
+    -- 同意状態をサーバーから取得して consentGiven を確定させる。
+    -- 既同意ユーザーはここで true になり、以降のループから送信が開始される。
+    Bridge.callServer('bootstrap', {}, function(ok, data)
+        if ok and data then
+            State.consentGiven = data.consentGiven == true
+        end
+    end)
 end)
 
 -- lb-phone 再起動時の再登録。
