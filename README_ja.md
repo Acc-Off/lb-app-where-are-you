@@ -68,9 +68,15 @@ lb-app-where-are-you/
 | <img src="docs/images/1_ja.png" alt="地図画面" height="360"> | <img src="docs/images/6_ja.png" alt="ゴーストモード設定" height="360"> |
 
 - 初回同意フロー（初回起動時のみ）
-- 地図でのフレンド位置表示（Leaflet タイルマップ）
+- 地図でのフレンド位置表示（lb-phone 内蔵の GameMap コンポーネントを使用）
 - 自分位置へのワンタップ復帰（GPSボタン）
 - 表示フィルタ（全員 / フレンド / グループ）
+
+> **地図タイルについて**
+> このアプリは lb-phoneが提供する地図コンポーネントを使用しており、タイル画像はバンドルしていません。
+> README のスクリーンショットは **PostalCodeMap** をカスタムマップとして使用しています。
+> 同じ地図を表示したい場合は、下記リポジトリの手順に従い、lb-phone の CustomMap として PostalCodeMap を導入してください。
+> https://github.com/Acc-Off/postal-code-map-tile
 
 ### ゴーストモードと可視性制御
 
@@ -169,7 +175,6 @@ lb-app-where-are-you/
 		dist/
 			index.html
 			assets/
-			map-tiles/   (使用環境に応じて同梱)
 ```
 
 `fxmanifest.lua` は `ui/dist/index.html` を参照するため、`ui/dist` を削らないようにしてください。

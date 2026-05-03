@@ -5,7 +5,6 @@
   },
   "map": {
     "self_label": "自分",
-    "recenter_btn": "現在地",
     "post_pin_label": "投稿: {name}",
     "unavailable": "地図を表示できません。一度アプリを閉じてもう一度開いてください。"
   },

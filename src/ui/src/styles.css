@@ -126,18 +126,28 @@ body {
     font-size: 12px;
 }
 
-.gps-fab {
+.map-fab-group {
     position: absolute;
-    left: 10px;
+    right: 10px;
     bottom: 10px;
     z-index: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+}
+
+.map-fab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
     border: 1px solid var(--line);
     background: var(--bg-surface);
     color: var(--ink-primary);
-    border-radius: 999px;
-    padding: 6px 10px;
-    font-size: 11px;
-    font-weight: 700;
+    border-radius: 10px;
+    padding: 0;
     cursor: pointer;
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
 }
@@ -940,7 +950,7 @@ body {
 
 /* driver.js ポップオーバー内で Font Awesome が上書きされないようにする。
    driver.js の CSS が font-family / font-weight を再指定するため !important で強制する。
-   fa-solid は font-weight:900、fa-regular/fa-brands は font-weight:400 が必須 。 */
+   fa-solid は font-weight:900、fa-regular/fa-brands は font-weight:400 が必須。 */
 .driver-popover .fa-solid {
     font-family: "Font Awesome 6 Free" !important;
     font-weight: 900 !important;

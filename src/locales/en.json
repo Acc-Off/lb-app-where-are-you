@@ -5,7 +5,6 @@
   },
   "map": {
     "self_label": "Me",
-    "recenter_btn": "My Location",
     "post_pin_label": "Post: {name}",
     "unavailable": "Map unavailable. Please close and reopen the app."
   },

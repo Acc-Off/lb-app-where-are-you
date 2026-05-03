@@ -70,9 +70,15 @@ Main configuration entries:
 | <img src="docs/images/1_en.png" alt="Map screen" height="360"> | <img src="docs/images/6_en.png" alt="Ghost mode settings" height="360"> |
 
 - First-run consent flow (only on first launch)
-- Friend location rendering on map (Leaflet tile map)
+- Friend location rendering on map (powered by lb-phone's built-in GameMap component)
 - One-tap return to your own location (GPS button)
 - View filters (All / Friends / Groups)
+
+> **Map tiles**
+> This app uses the map component provided by lb-phone and does not bundle any tile images.
+> The screenshots in this README use **PostalCodeMap** as a custom map.
+> To display the same map, install PostalCodeMap as an lb-phone Custom Map by following the instructions at:
+> https://github.com/Acc-Off/postal-code-map-tile
 
 ### Ghost mode and visibility control
 
@@ -171,7 +177,6 @@ lb-app-where-are-you/
 		dist/
 			index.html
 			assets/
-			map-tiles/   (bundle as needed for your environment)
 ```
 
 `fxmanifest.lua` references `ui/dist/index.html`, so do not remove `ui/dist`.

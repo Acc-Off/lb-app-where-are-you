@@ -1,12 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import type L from 'leaflet'
-import type { LatLngExpression } from 'leaflet'
 import { fetchNuiCallback, getInitialAppOpenState, useAppEvent } from '../utils/nui'
 import {
     clampPosition,
-    createLosSantosCrs,
     MAP_BOUNDS,
-    mapCenter,
 } from '../utils/map'
 import { callApi } from '../features/shared/api/callApi'
 import type {
@@ -84,7 +80,7 @@ export function AppShell() {
     const [nearbyCandidates, setNearbyCandidates] = useState<NearbyCandidate[]>([])
     const [selectedFriend, setSelectedFriend] = useState<FriendDetail | null>(null)
     const [confirmAction, setConfirmAction] = useState<{ type: 'block' | 'remove'; friend: FriendDetail } | null>(null)
-    const [mapInstance, setMapInstance] = useState<L.Map | null>(null)
+    const [mapInstance, setMapInstance] = useState<GameMapInstance | null>(null)
     const [groups, setGroups] = useState<GroupItem[]>([])
     const [groupNameInput, setGroupNameInput] = useState('')
     const [groupPasswordInput, setGroupPasswordInput] = useState('')
@@ -119,18 +115,10 @@ export function AppShell() {
     const detailDialogRef = useRef<HTMLDialogElement>(null)
     const confirmDialogRef = useRef<HTMLDialogElement>(null)
     const deleteDialogRef = useRef<HTMLDialogElement>(null)
-    const initialMapCenteredRef = useRef(false)
-    // mapInstance state とは別に ref でも保持する。
-    // useAppEvent ハンドラは closure のため最新の mapInstance を参照できないので、
-    // ref を通じて appOpen 時の invalidateSize 呼び出しに使用する。
-    const mapInstanceRef = useRef<L.Map | null>(null)
 
     // AppShell 自身は LocaleContext.Provider を定義する側なので、
     // useT()（Context 経由）ではなく localeData state を直接使う createT を使用する。
     const t = useMemo(() => createT(localeData), [localeData])
-    const crs = useMemo(() => createLosSantosCrs(), [])
-    const tileUrl = 'map-tiles/render/{z}/{x}/{y}.png'
-    const markerLatLng: LatLngExpression = [selfPosition.y, selfPosition.x]
 
     const applyGhostModeSettings = useCallback((settings?: GhostModeSettings) => {
         if (!settings) return
@@ -251,12 +239,6 @@ export function AppShell() {
         //   この行（document.body.style.visibility = 'visible'）を削除する。
         document.body.style.visibility = 'visible'
         setIsAppOpen(true)
-        // lb-phone はプリロード時にコンテナが 0x0 の状態で appOpen を送信するため、
-        // isAppOpen が既に true でも phone が実際に開く度に invalidateSize が必要。
-        // 短い遅延で lb-phone のオープンアニメーション完了を待つ。
-        window.setTimeout(() => {
-            try { mapInstanceRef.current?.invalidateSize(false) } catch (_) { }
-        }, 250)
     })
     useAppEvent('appClose', () => { setIsAppOpen(false) })
 
@@ -339,51 +321,11 @@ export function AppShell() {
         return () => { window.clearInterval(timer) }
     }, [activeTab, isAppOpen, refreshTimeline])
 
-    // mapInstance state の変化を ref に同期する（useAppEvent ハンドラから最新値を参照するため）
-    useEffect(() => {
-        mapInstanceRef.current = mapInstance
-    }, [mapInstance])
-
-    const safeSetView = useCallback((map: L.Map, lat: number, lng: number, minZoom?: number) => {
-        const container = map.getContainer?.()
-        if (!container || !container.isConnected) return
-
-        map.whenReady(() => {
-            if (!container.isConnected) return
-
-            window.requestAnimationFrame(() => {
-                try {
-                    map.invalidateSize(false)
-                    const zoom = typeof minZoom === 'number' ? Math.max(map.getZoom(), minZoom) : map.getZoom()
-                    map.setView([lat, lng], zoom, { animate: false })
-                } catch (_error) {
-                    // ignore
-                }
-            })
-        })
-    }, [])
-
-    // 初回 ready 時に自分の位置に地図を移動する
-    useEffect(() => {
-        if (!mapInstance || !ready || activeTab !== 'map' || initialMapCenteredRef.current) return
-        safeSetView(mapInstance, selfPosition.y, selfPosition.x, 4)
-        initialMapCenteredRef.current = true
-    }, [activeTab, mapInstance, ready, safeSetView, selfPosition.x, selfPosition.y])
-
     // focusedPostPin が変わったとき地図をその位置に移動する
     useEffect(() => {
         if (!mapInstance || activeTab !== 'map' || !focusedPostPin) return
-        safeSetView(mapInstance, focusedPostPin.y, focusedPostPin.x, 4)
-    }, [activeTab, focusedPostPin, mapInstance, safeSetView])
-
-    // マップタブに戻ったとき Leaflet にコンテナサイズを再計算させてタイルを正しく表示する
-    // （MapTab の display:none → display:block になると Leaflet はサイズ変更を検知できない）
-    useEffect(() => {
-        if (!mapInstance || activeTab !== 'map') return
-        window.requestAnimationFrame(() => {
-            try { mapInstance.invalidateSize(false) } catch (_) { /* ignore */ }
-        })
-    }, [activeTab, mapInstance])
+        mapInstance.setPosition({ x: focusedPostPin.x, y: focusedPostPin.y }, 4)
+    }, [activeTab, focusedPostPin, mapInstance])
 
     // 同意済みで tutorialDone フラグが未設定の場合にチュートリアルを起動する。
     // 既存ユーザーがアップデート後に初めて開いた場合にも対応する。
@@ -397,8 +339,8 @@ export function AppShell() {
 
     const recenterToSelf = useCallback(() => {
         if (!mapInstance) return
-        safeSetView(mapInstance, selfPosition.y, selfPosition.x)
-    }, [mapInstance, safeSetView, selfPosition.x, selfPosition.y])
+        mapInstance.setPosition({ x: selfPosition.x, y: selfPosition.y })
+    }, [mapInstance, selfPosition.x, selfPosition.y])
 
     const applyViewFilter = (value: string) => {
         if (value === 'all' || value === 'friends') {
@@ -755,13 +697,13 @@ export function AppShell() {
         <main className="app">
             <Header consentGiven={consentGiven} ghostMode={ghostMode} onOpenGhostSheet={() => setGhostSheetOpen(true)} />
 
-            {/* MapTab は常時マウント（display:none で隠す）。unmount するとLeafletインスタンスが破棄され、
-                タブ復帰のたびに地図が Los Santos 中心にリセットされるため。 */}
+            {/* MapTab は常時マウント（display:none で隠す）。unmount するとGameMapインスタンスが破棄され、
+                タブ復帰のたびに地図の状態がリセットされるため。 */}
             <MapTab
+                isAppOpen={isAppOpen}
                 isActive={activeTab === 'map'}
-                crs={crs}
-                tileUrl={tileUrl}
-                markerLatLng={markerLatLng}
+                selfX={selfPosition.x}
+                selfY={selfPosition.y}
                 ready={ready}
                 viewFilter={viewFilter}
                 selectedGroupId={selectedGroupId}
