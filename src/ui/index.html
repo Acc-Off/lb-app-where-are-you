@@ -4,8 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WhereAreYou?</title>
+  <!-- Font Awesome 6 Free (MIT icons / CC BY 4.0 fonts / SIL OFL 1.1 styles) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
+  <!-- Early capture: register before the async JS bundle loads so appOpen/appClose
+       messages sent by lb-phone (onUse callback) are not lost while the bundle fetches. -->
+  <script>
+    window.__wayAppIsOpen = false;
+    window.addEventListener('message', function(e) {
+      if (e.data && typeof e.data === 'object') {
+        if (e.data.action === 'appOpen')  { window.__wayAppIsOpen = true; }
+        if (e.data.action === 'appClose') { window.__wayAppIsOpen = false; }
+      }
+    });
+  </script>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

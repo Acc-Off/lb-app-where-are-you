@@ -42,12 +42,20 @@ export function ghostModeLabel(mode: GhostMode, t: TFn): string {
     return t(`ghost.mode.${mode}`)
 }
 
-/** ゴーストモードをアイコン文字列（絵文字・記号）に変換する。 */
+/** ゴーストモードをアイコン HTML 文字列に変換する（Leaflet tooltip 等の innerHTML で使用する）。 */
 export function ghostModeBadge(mode: GhostMode): string {
-    if (mode === 'freeze') return '👻'
-    if (mode === 'blur') return '〜'
-    if (mode === 'off') return 'OFF'
-    return '●'
+    if (mode === 'freeze') return '<i class="fa-solid fa-ghost"></i>'
+    if (mode === 'blur') return '<i class="fa-solid fa-eye-slash"></i>'
+    if (mode === 'off') return '<i class="fa-solid fa-ban"></i>'
+    return '<i class="fa-solid fa-location-dot"></i>'
+}
+
+/** Header コンポーネント用: ゴーストモードに対応する FA アイコンクラス文字列を返す。 */
+export function ghostModeIconClass(mode: GhostMode): string {
+    if (mode === 'freeze') return 'fa-solid fa-ghost'
+    if (mode === 'blur') return 'fa-solid fa-eye-slash'
+    if (mode === 'off') return 'fa-solid fa-ban'
+    return 'fa-solid fa-location-dot'
 }
 
 /** ゴーストモードに応じたマーカー色コードを返す。地図上の CircleMarker の fillColor に使用する。 */

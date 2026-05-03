@@ -93,10 +93,10 @@ export function TimelineTab({
                             <div className="timeline-post-actions">
                                 <span className="timeline-time">{relativeTime(post.createdAt, t)}</span>
                                 {post.playerId === selfPlayerId && (
-                                    <button type="button" className="icon-btn danger" title={t('timeline.reaction_delete_btn')} onClick={() => onDeletePost(post.id)}>🗑️</button>
+                                    <button type="button" className="icon-btn danger" title={t('timeline.reaction_delete_btn')} onClick={() => onDeletePost(post.id)}><i className="fa-solid fa-trash-can" aria-hidden="true" /></button>
                                 )}
-                                <button type="button" className="icon-btn" title="地図で確認" onClick={() => onJumpToPost(post)}>📍</button>
-                                <button type="button" className="icon-btn" title="リアクション" onClick={() => onOpenReactionModal(post.id)}>💬</button>
+                                <button type="button" className="icon-btn" title="地図で確認" onClick={() => onJumpToPost(post)}><i className="fa-solid fa-map-pin" aria-hidden="true" /></button>
+                                <button type="button" className="icon-btn" title="リアクション" onClick={() => onOpenReactionModal(post.id)}><i className="fa-solid fa-comment" aria-hidden="true" /></button>
                             </div>
                         </header>
                         <p className="timeline-content">{post.content === '' ? t('timeline.no_text') : post.content}</p>

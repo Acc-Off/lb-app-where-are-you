@@ -937,3 +937,22 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* driver.js ポップオーバー内で Font Awesome が上書きされないようにする。
+   driver.js の CSS が font-family / font-weight を再指定するため !important で強制する。
+   fa-solid は font-weight:900、fa-regular/fa-brands は font-weight:400 が必須 。 */
+.driver-popover .fa-solid {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+    font-style: normal !important;
+}
+.driver-popover .fa-regular {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+}
+.driver-popover .fa-brands {
+    font-family: "Font Awesome 6 Brands" !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+}

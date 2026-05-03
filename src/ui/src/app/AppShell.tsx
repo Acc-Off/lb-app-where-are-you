@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type L from 'leaflet'
 import type { LatLngExpression } from 'leaflet'
-import { fetchNuiCallback, useAppEvent } from '../utils/nui'
+import { fetchNuiCallback, getInitialAppOpenState, useAppEvent } from '../utils/nui'
 import {
     clampPosition,
     createLosSantosCrs,
+    MAP_BOUNDS,
     mapCenter,
 } from '../utils/map'
 import { callApi } from '../features/shared/api/callApi'
@@ -50,8 +51,8 @@ import { hasDoneTutorial, startTutorial, resetTutorial } from '../features/tutor
 import { createT } from '../features/shared/locale'
 
 const defaultPosition: PositionPayload = {
-    x: mapCenter.x,
-    y: mapCenter.y,
+    x: (MAP_BOUNDS.topLeft.x + MAP_BOUNDS.bottomRight.x) / 2,
+    y: (MAP_BOUNDS.topLeft.y + MAP_BOUNDS.bottomRight.y) / 2,
     z: 0,
     heading: 0,
     speed: 0,
@@ -109,17 +110,27 @@ export function AppShell() {
     })
     // ロケールデータ: bootstrap イベントで ox_lib の getLocales() 結果を受け取る
     const [localeData, setLocaleData] = useState<LocaleData>({})
+    // lb-phone の onUse/onClose に連動してポーリングを制御する
+    // モジュールレベルで捕捉した appOpen/appClose を初期値として使う。
+    // lb-phone は React マウントより前に appOpen を送信するため、
+    // nui.ts の早期リスナで受け取った状態を初期値に設定する。
+    const [isAppOpen, setIsAppOpen] = useState(() => getInitialAppOpenState())
 
     const detailDialogRef = useRef<HTMLDialogElement>(null)
     const confirmDialogRef = useRef<HTMLDialogElement>(null)
     const deleteDialogRef = useRef<HTMLDialogElement>(null)
     const initialMapCenteredRef = useRef(false)
+    // mapInstance state とは別に ref でも保持する。
+    // useAppEvent ハンドラは closure のため最新の mapInstance を参照できないので、
+    // ref を通じて appOpen 時の invalidateSize 呼び出しに使用する。
+    const mapInstanceRef = useRef<L.Map | null>(null)
 
     // AppShell 自身は LocaleContext.Provider を定義する側なので、
     // useT()（Context 経由）ではなく localeData state を直接使う createT を使用する。
     const t = useMemo(() => createT(localeData), [localeData])
     const crs = useMemo(() => createLosSantosCrs(), [])
     const tileUrl = 'map-tiles/render/{z}/{x}/{y}.png'
+    const markerLatLng: LatLngExpression = [selfPosition.y, selfPosition.x]
 
     const applyGhostModeSettings = useCallback((settings?: GhostModeSettings) => {
         if (!settings) return
@@ -180,6 +191,9 @@ export function AppShell() {
     }, [selectedGroupId, viewFilter])
 
     useEffect(() => {
+        // プリロード時（別アプリ表示中）は lb-phone の fetchNui がまだ注入されていないためスキップする
+        if (!isAppOpen) return
+
         let mounted = true
 
         fetchNuiCallback<PositionPayload>('getSelfPosition', {}, defaultPosition)
@@ -227,7 +241,24 @@ export function AppShell() {
         return () => {
             mounted = false
         }
-    }, [applyGhostModeSettings])
+    }, [isAppOpen, applyGhostModeSettings])
+
+    useAppEvent('appOpen', () => {
+        // TODO(lb-phone-bug-workaround): lb-phone バグ回避処理。修正後に削除すること。
+        // 【バグ内容】バックグラウンド復帰時に lb-phone が componentsLoaded を送信しないため、
+        //   body が visibility:hidden のまま画面が真っ暗になる。
+        // 【削除方法】lb-phone がバックグラウンド復帰時にも componentsLoaded を送信するようになったら、
+        //   この行（document.body.style.visibility = 'visible'）を削除する。
+        document.body.style.visibility = 'visible'
+        setIsAppOpen(true)
+        // lb-phone はプリロード時にコンテナが 0x0 の状態で appOpen を送信するため、
+        // isAppOpen が既に true でも phone が実際に開く度に invalidateSize が必要。
+        // 短い遅延で lb-phone のオープンアニメーション完了を待つ。
+        window.setTimeout(() => {
+            try { mapInstanceRef.current?.invalidateSize(false) } catch (_) { }
+        }, 250)
+    })
+    useAppEvent('appClose', () => { setIsAppOpen(false) })
 
     useAppEvent('selfPosition', (position: PositionPayload) => {
         if (!position) return
@@ -263,8 +294,6 @@ export function AppShell() {
         setPendingRequests(data.pendingRequests ?? [])
     })
 
-    const markerLatLng: LatLngExpression = [selfPosition.y, selfPosition.x]
-
     const filteredFriendsMap = useMemo(() => {
         if (viewFilter === 'friends') return friendsMap.filter((friend) => friend.isFriend === true)
         if (viewFilter === 'group' && selectedGroupId) return friendsMap.filter((friend) => (friend.sharedGroupIds ?? []).includes(selectedGroupId))
@@ -272,6 +301,9 @@ export function AppShell() {
     }, [friendsMap, selectedGroupId, viewFilter])
 
     useEffect(() => {
+        // プリロード時（別アプリ表示中）はデータ取得をスキップする
+        if (!isAppOpen) return
+
         // [B-5] マップタブ以外に切り替えた時、チェックインマーカーをクリアする。
         if (activeTab !== 'map') {
             setFocusedPostPin(null)
@@ -293,19 +325,24 @@ export function AppShell() {
         }
 
         void refreshFriendsMap()
-    }, [activeTab, refreshFriendsList, refreshFriendsMap, refreshMyGroups, refreshTimeline])
+    }, [isAppOpen, activeTab, refreshFriendsList, refreshFriendsMap, refreshMyGroups, refreshTimeline])
 
     useEffect(() => {
-        if (activeTab !== 'map') return
+        if (activeTab !== 'map' || !isAppOpen) return
         const timer = window.setInterval(() => { void refreshFriendsMap() }, 2000)
         return () => { window.clearInterval(timer) }
-    }, [activeTab, refreshFriendsMap])
+    }, [activeTab, isAppOpen, refreshFriendsMap])
 
     useEffect(() => {
-        if (activeTab !== 'timeline') return
+        if (activeTab !== 'timeline' || !isAppOpen) return
         const timer = window.setInterval(() => { void refreshTimeline() }, 5000)
         return () => { window.clearInterval(timer) }
-    }, [activeTab, refreshTimeline])
+    }, [activeTab, isAppOpen, refreshTimeline])
+
+    // mapInstance state の変化を ref に同期する（useAppEvent ハンドラから最新値を参照するため）
+    useEffect(() => {
+        mapInstanceRef.current = mapInstance
+    }, [mapInstance])
 
     const safeSetView = useCallback((map: L.Map, lat: number, lng: number, minZoom?: number) => {
         const container = map.getContainer?.()
@@ -326,19 +363,21 @@ export function AppShell() {
         })
     }, [])
 
+    // 初回 ready 時に自分の位置に地図を移動する
     useEffect(() => {
         if (!mapInstance || !ready || activeTab !== 'map' || initialMapCenteredRef.current) return
         safeSetView(mapInstance, selfPosition.y, selfPosition.x, 4)
         initialMapCenteredRef.current = true
     }, [activeTab, mapInstance, ready, safeSetView, selfPosition.x, selfPosition.y])
 
+    // focusedPostPin が変わったとき地図をその位置に移動する
     useEffect(() => {
         if (!mapInstance || activeTab !== 'map' || !focusedPostPin) return
         safeSetView(mapInstance, focusedPostPin.y, focusedPostPin.x, 4)
     }, [activeTab, focusedPostPin, mapInstance, safeSetView])
 
-    // 地図タブに戻ったとき、Leaflet にコンテナサイズを再計算させてタイルを正しく表示する
-    // （MapTab が display:none → display:block になるとLeafletはサイズ変化を検知できないため）
+    // マップタブに戻ったとき Leaflet にコンテナサイズを再計算させてタイルを正しく表示する
+    // （MapTab の display:none → display:block になると Leaflet はサイズ変更を検知できない）
     useEffect(() => {
         if (!mapInstance || activeTab !== 'map') return
         window.requestAnimationFrame(() => {

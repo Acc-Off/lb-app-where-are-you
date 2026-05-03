@@ -6,7 +6,8 @@
   "map": {
     "self_label": "Me",
     "recenter_btn": "My Location",
-    "post_pin_label": "Post: {name}"
+    "post_pin_label": "Post: {name}",
+    "unavailable": "Map unavailable. Please close and reopen the app."
   },
   "consent": {
     "title": "Location Sharing Consent",
@@ -126,8 +127,7 @@
     "modal_title": "Send Reaction",
     "stamp": {
       "select_title": "Select emoji",
-      "change_title": "Change emoji",
-      "empty_label": "—"
+      "change_title": "Change emoji"
     },
     "message_placeholder": "Add a message (optional)",
     "submit_btn": "Send"
@@ -229,31 +229,31 @@
     "prev_btn": "Back",
     "done_btn": "Start",
     "step1": {
-      "title": "👋 Welcome to WhereAreYou?",
+      "title": "<i class=\"fa-solid fa-hand\"></i> Welcome to WhereAreYou?",
       "desc": "This app lets you check and share friend locations in real time.<br>Here is a quick overview."
     },
     "step2": {
-      "title": "👻 Ghost Mode",
+      "title": "<i class=\"fa-solid fa-ghost\"></i> Ghost Mode",
       "desc": "Tap here to toggle Ghost Mode.<br>Control how your location appears to friends: Normal / Hidden / Frozen / Blurred."
     },
     "step3": {
-      "title": "🗺️ Map",
+      "title": "<i class=\"fa-solid fa-map-location-dot\"></i> Map",
       "desc": "See where your friends are in real time on the map.<br>Tap a marker to view details."
     },
     "step4": {
-      "title": "📍 Timeline",
+      "title": "<i class=\"fa-solid fa-list\"></i> Timeline",
       "desc": "Post check-ins to leave a trail of where you have been.<br>You can also see your friends' check-ins."
     },
     "step5": {
-      "title": "👥 Friends",
+      "title": "<i class=\"fa-solid fa-user\"></i> Friends",
       "desc": "Add friends, accept requests, and manage blocks.<br>You can also send requests to nearby players."
     },
     "step6": {
-      "title": "🫂 Groups",
+      "title": "<i class=\"fa-solid fa-users\"></i> Groups",
       "desc": "Create or join groups to share locations within the group.<br>You can filter the map to show only group members."
     },
     "step7": {
-      "title": "⚙️ Settings",
+      "title": "<i class=\"fa-solid fa-gear\"></i> Settings",
       "desc": "Configure nearby friend notifications, intervals, and other settings.<br>You can also delete your account here."
     }
   }

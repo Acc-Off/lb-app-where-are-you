@@ -38,7 +38,7 @@ export function ReactionModal({
                         title={reactionStamp === '' ? t('reaction.stamp.select_title') : t('reaction.stamp.change_title')}
                         onClick={onPickStamp}
                     >
-                        {reactionStamp === '' ? t('reaction.stamp.empty_label') : reactionStamp}
+                        {reactionStamp === '' ? <i className="fa-solid fa-circle-minus" aria-hidden="true" /> : reactionStamp}
                     </button>
                     <input
                         value={reactionMessage}

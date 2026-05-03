@@ -27,6 +27,7 @@ function App.addCustomApp()
         -- アプリを開いたときに初期データを同期する。
         onUse = function()
             State.appIsOpen = true
+            Bridge.sendAppMessage('appOpen', {})
             Bridge.sendAppMessage('selfPosition', Bridge.getCurrentPosition())
 
             Bridge.callServer('bootstrap', {}, function(ok, data)
@@ -44,6 +45,7 @@ function App.addCustomApp()
         -- 閉じたらループ側で送信を止める。
         onClose = function()
             State.appIsOpen = false
+            Bridge.sendAppMessage('appClose', {})
         end,
 
         -- アンインストール時に同意フラグをリセットし、位置情報送信を即時停止する。

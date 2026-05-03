@@ -3,7 +3,7 @@
  * ゴーストモードバッジ・ラベルの表示と
  * ゴーストシートを開くボタンを提供する。
  */
-import { ghostModeBadge, ghostModeLabel } from '../presentation'
+import { ghostModeIconClass, ghostModeLabel } from '../presentation'
 import { useT } from '../locale'
 import type { GhostMode } from '../types'
 
@@ -22,7 +22,7 @@ export function Header({ consentGiven, ghostMode, onOpenGhostSheet }: HeaderProp
                 <p>{consentGiven ? t('header.subtitle_active') : t('header.subtitle_consent')}</p>
             </div>
             <button id="tutorial-ghost-btn" className="status-pill" type="button" onClick={onOpenGhostSheet}>
-                {ghostModeBadge(ghostMode)} {ghostModeLabel(ghostMode, t)}
+                <i className={ghostModeIconClass(ghostMode)} aria-hidden="true" />{' '}{ghostModeLabel(ghostMode, t)}
             </button>
         </header>
     )

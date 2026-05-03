@@ -6,7 +6,8 @@
   "map": {
     "self_label": "自分",
     "recenter_btn": "現在地",
-    "post_pin_label": "投稿: {name}"
+    "post_pin_label": "投稿: {name}",
+    "unavailable": "地図を表示できません。一度アプリを閉じてもう一度開いてください。"
   },
   "consent": {
     "title": "位置共有の同意",
@@ -126,8 +127,7 @@
     "modal_title": "リアクションを送信",
     "stamp": {
       "select_title": "絵文字を選択",
-      "change_title": "絵文字を変更",
-      "empty_label": "未"
+      "change_title": "絵文字を変更"
     },
     "message_placeholder": "ひとこと（任意）",
     "submit_btn": "送信"
@@ -229,31 +229,31 @@
     "prev_btn": "戻る",
     "done_btn": "始める",
     "step1": {
-      "title": "👋 WhereAreYou? へようこそ！",
+      "title": "<i class=\"fa-solid fa-hand\"></i> WhereAreYou? へようこそ！",
       "desc": "このアプリはフレンドの位置をリアルタイムで確認・共有できるアプリです。<br>簡単な使い方を説明します。"
     },
     "step2": {
-      "title": "👻 ゴーストモード",
+      "title": "<i class=\"fa-solid fa-ghost\"></i> ゴーストモード",
       "desc": "ここをタップするとゴーストモードを切り替えられます。<br>フレンドへの自分の位置表示を「通常 / 非表示 / フリーズ / ぼかし」で制御できます。"
     },
     "step3": {
-      "title": "🗺️ 地図",
+      "title": "<i class=\"fa-solid fa-map-location-dot\"></i> 地図",
       "desc": "地図上でフレンドの現在位置をリアルタイムに確認できます。<br>マーカーをタップすると詳細が表示されます。"
     },
     "step4": {
-      "title": "📍 タイムライン",
+      "title": "<i class=\"fa-solid fa-list\"></i> タイムライン",
       "desc": "チェックインを投稿して現在地の足跡を残せます。<br>フレンドのチェックインも確認できます。"
     },
     "step5": {
-      "title": "👥 友達",
+      "title": "<i class=\"fa-solid fa-user\"></i> 友達",
       "desc": "フレンドの追加・申請の承認・ブロック管理ができます。<br>近くにいるプレイヤーへ申請を送ることもできます。"
     },
     "step6": {
-      "title": "🫂 グループ",
+      "title": "<i class=\"fa-solid fa-users\"></i> グループ",
       "desc": "グループを作成・参加すると、グループ単位で位置共有できます。<br>地図フィルターでグループメンバーだけ表示することも可能です。"
     },
     "step7": {
-      "title": "⚙️ 設定",
+      "title": "<i class=\"fa-solid fa-gear\"></i> 設定",
       "desc": "近くのフレンド通知・通知間隔などのアプリ設定や、<br>退会（データ削除）はここから行えます。"
     }
   }
