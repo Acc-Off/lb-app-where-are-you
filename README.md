@@ -40,6 +40,40 @@ lb-app-where-are-you/
 	sql.sql
 ```
 
+### 4. Install a Custom Map (optional but recommended)
+
+This app uses lb-phone's built-in `GameMap` component and does not bundle any map tile images.
+By default the map uses whatever tile set lb-phone provides out of the box.
+
+To use the **PostalCodeMap** shown in the README screenshots, add an entry to `Config.CustomMaps` in `lb-phone/config/config.lua`.
+
+> **Note:** `Config.CustomMaps` defaults to `{}`, in which case lb-phone uses its built-in maps automatically.
+> Once you define any entry in `Config.CustomMaps`, the built-in maps are no longer added automatically —
+> so if you want to keep the default maps (Los Santos, Cayo Perico, etc.) alongside PostalCodeMap,
+> you must include them explicitly in the list.
+
+```lua
+Config.CustomMaps = {
+    {
+        label       = "Postal Code Map",
+        url         = "https://postal-code-map-tile.pages.dev/tiles/{z}/{x}/{y}.png",
+        center      = { 1650, 450 },
+        topLeft     = { -4140, 8400 },
+        bottomRight = { 4860, -5100 },
+        resolution  = { 6144, 9216 },
+        zoom = { default = 3, max = 6, min = 0 },
+        styles = {
+            { name = "render", background = "#000000" },
+        },
+    },
+    -- To keep the default maps, copy their entries here from lb-phone/config/config.lua
+}
+```
+
+For the full tile configuration details and default map entries, see: <https://github.com/Acc-Off/postal-code-map-tile#using-with-lb-phone>
+
+Once added, players can select **Postal Code Map** from the map style picker inside lb-phone (and inside this app).
+
 ## Configuration (`config.lua`)
 
 Main configuration entries:
@@ -68,17 +102,12 @@ Main configuration entries:
 | Map screen                                                     | Ghost mode settings                                                     |
 | -------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | <img src="docs/images/1_en.png" alt="Map screen" height="360"> | <img src="docs/images/6_en.png" alt="Ghost mode settings" height="360"> |
+| <img src="docs/images/8_en.png" alt="Map screen" height="360"> | <img src="docs/images/9_en.png" alt="Map screen" height="360">          |
 
 - First-run consent flow (only on first launch)
 - Friend location rendering on map (powered by lb-phone's built-in GameMap component)
 - One-tap return to your own location (GPS button)
 - View filters (All / Friends / Groups)
-
-> **Map tiles**
-> This app uses the map component provided by lb-phone and does not bundle any tile images.
-> The screenshots in this README use **PostalCodeMap** as a custom map.
-> To display the same map, install PostalCodeMap as an lb-phone Custom Map by following the instructions at:
-> https://github.com/Acc-Off/postal-code-map-tile
 
 ### Ghost mode and visibility control
 

@@ -38,6 +38,39 @@ lb-app-where-are-you/
 	sql.sql
 ```
 
+### 4. カスタムマップの導入（任意・推奨）
+
+このアプリは lb-phone 内蔵の `GameMap` コンポーネントを使用しており、タイル画像はバンドルしていません。
+既定では lb-phone が標準で提供する地図がそのまま使用されます。
+
+README のスクリーンショットと同じ **PostalCodeMap** を使用するには、`lb-phone/config/config.lua` の `Config.CustomMaps` にエントリを追加してください。
+
+> **注意:** `Config.CustomMaps` の既定値は `{}` で、その場合は lb-phone が標準の組み込みマップを自動的に使用します。
+> `Config.CustomMaps` に1つでもエントリを定義すると、標準マップは自動追加されなくなります。
+> デフォルトマップ（Los Santos・Cayo Perico 等）も引き続き使いたい場合は、それらのエントリも明示的にリストへ含める必要があります。
+
+```lua
+Config.CustomMaps = {
+    {
+        label       = "Postal Code Map",
+        url         = "https://postal-code-map-tile.pages.dev/tiles/{z}/{x}/{y}.png",
+        center      = { 1650, 450 },
+        topLeft     = { -4140, 8400 },
+        bottomRight = { 4860, -5100 },
+        resolution  = { 6144, 9216 },
+        zoom = { default = 3, max = 6, min = 0 },
+        styles = {
+            { name = "render", background = "#000000" },
+        },
+    },
+    -- デフォルトマップも使い続ける場合は、lb-phone/config/config.lua からそのエントリをここへコピーしてください
+}
+```
+
+タイル設定の詳細やデフォルトマップのエントリは下記を参照してください: <https://github.com/Acc-Off/postal-code-map-tile#using-with-lb-phone>
+
+追加後、lb-phone（およびこのアプリ）の地図スタイル選択から **Postal Code Map** を選択できます。
+
 ## 設定（config.lua）
 
 主な設定項目は以下です。
@@ -66,17 +99,12 @@ lb-app-where-are-you/
 | 地図画面                                                     | ゴーストモード設定                                                     |
 | ------------------------------------------------------------ | ---------------------------------------------------------------------- |
 | <img src="docs/images/1_ja.png" alt="地図画面" height="360"> | <img src="docs/images/6_ja.png" alt="ゴーストモード設定" height="360"> |
+| <img src="docs/images/8_ja.png" alt="地図画面" height="360"> | <img src="docs/images/9_ja.png" alt="地図画面" height="360">           |
 
 - 初回同意フロー（初回起動時のみ）
 - 地図でのフレンド位置表示（lb-phone 内蔵の GameMap コンポーネントを使用）
 - 自分位置へのワンタップ復帰（GPSボタン）
 - 表示フィルタ（全員 / フレンド / グループ）
-
-> **地図タイルについて**
-> このアプリは lb-phoneが提供する地図コンポーネントを使用しており、タイル画像はバンドルしていません。
-> README のスクリーンショットは **PostalCodeMap** をカスタムマップとして使用しています。
-> 同じ地図を表示したい場合は、下記リポジトリの手順に従い、lb-phone の CustomMap として PostalCodeMap を導入してください。
-> https://github.com/Acc-Off/postal-code-map-tile
 
 ### ゴーストモードと可視性制御
 
