@@ -88,16 +88,14 @@ export function MapTab({
 
     // GameMap インスタンスを初期化する
     // isAppOpen=true になった時（appOpen 受信後）に実行する。
-    // TODO(lb-phone-bug-workaround): deps に isAppOpen を含めているのは lb-phone バグ回避処理。修正後に削除すること。
-    // 【バグ内容】バックグラウンド復帰時に lb-phone が window.components （GameMap を含む）を注入しない。
-    // 【削除方法】lb-phone がバックグラウンド復帰時にも window.components を注入するようになったら、
-    //   deps を [] に戻し、setMapUnavailable の分岐と mapUnavailable の JSX を削除する。
+    // NOTE: deps の isAppOpen はバグ回避ではなく、アプリ表示時のみコンテナにサイズが付くため必須。
+    // NOTE(lb-phone-defensive): 下の setMapUnavailable 分岐は lb-phone v2.8.2 で本体側修正済みだが、
+    //   将来 window.components が再び未注入になった場合のフォールバックとして防御的に残す。削除しないこと。
+    // 【バグ内容】バックグラウンド復帰時に lb-phone が window.components （GameMap を含む）を注入しなかった。
     useEffect(() => {
         if (!isAppOpen) return
         if (!containerRef.current || !window.components?.GameMap) {
-            // TODO(lb-phone-bug-workaround): lb-phone バグ回避処理。修正後に削除すること。
-            // 【バグ内容】バックグラウンド復帰時に window.components が未注入のため GameMap が使えない。
-            // 【削除方法】この if ブロック（setMapUnavailable(true) の分岐）を削除する。
+            // NOTE(lb-phone-defensive): window.components 未注入時のフォールバック。v2.8.2 修正後も保険として残す。
             setMapUnavailable(true)
             return
         }
@@ -272,9 +270,9 @@ export function MapTab({
         // タブ切り替えによる地図位置リセットを防ぐ。
         <section className="map-card" style={{ display: isActive ? undefined : 'none' }}>
             {mapUnavailable ? (
-                // TODO(lb-phone-bug-workaround): lb-phone バグ回避処理。修正後に削除すること。
+                // NOTE(lb-phone-defensive): window.components 未注入時のフォールバック表示。
+                //   lb-phone v2.8.2 で本体側修正済みだが、再発に備えて保険として残す。削除しないこと。
                 // 【バグ内容】バックグラウンド復帰時に window.components が未注入で GameMap が初期化できない。
-                // 【削除方法】この三項演算全体（mapUnavailable ブロックと <> ブロック）を <> ブロックの内容だけに戴ける。
                 <div className="map map--unavailable">
                     <p>{t('map.unavailable')}</p>
                 </div>

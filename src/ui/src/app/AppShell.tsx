@@ -232,11 +232,12 @@ export function AppShell() {
     }, [isAppOpen, applyGhostModeSettings])
 
     useAppEvent('appOpen', () => {
-        // TODO(lb-phone-bug-workaround): lb-phone バグ回避処理。修正後に削除すること。
-        // 【バグ内容】バックグラウンド復帰時に lb-phone が componentsLoaded を送信しないため、
+        // NOTE(lb-phone-defensive): lb-phone v2.8.2 で本体側のバグは修正済みだが、
+        //   将来の再発（componentsLoaded 未送信など）に備えて防御的に残す。削除しないこと。
+        // 【バグ内容】バックグラウンド復帰時に lb-phone が componentsLoaded を送信しないと、
         //   body が visibility:hidden のまま画面が真っ暗になる。
-        // 【削除方法】lb-phone がバックグラウンド復帰時にも componentsLoaded を送信するようになったら、
-        //   この行（document.body.style.visibility = 'visible'）を削除する。
+        // 【効果】appOpen 受信時に body を明示的に visible にすることで、
+        //   componentsLoaded が来なくても画面が表示される保険となる。
         document.body.style.visibility = 'visible'
         setIsAppOpen(true)
     })

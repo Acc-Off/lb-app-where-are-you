@@ -131,6 +131,11 @@ RegisterNUICallback('getBootstrap', function(_, cb)
         if ok and data then
             State.consentGiven = data.consentGiven == true
             applyAppSettings(data.appSettings)
+            -- ox_lib のロケールデータを UI に渡す（NUI テキストの多言語対応）。
+            -- onUse の sendAppMessage('bootstrap') 経路（app.lua）と揃える。
+            -- これが無いと UI 起動時の getBootstrap 経路では locale が空になり、
+            -- 全テキストが翻訳キーのまま表示される。
+            data.locales = lib.getLocales()
         end
 
         cb({ ok = ok, data = data, error = err })
