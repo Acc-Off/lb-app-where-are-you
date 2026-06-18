@@ -10,6 +10,27 @@ It combines map visibility, ghost mode controls, friend management, timeline pos
 
 This project was built mainly with **GitHub Copilot** and reached a working state in about **15 hours**.
 
+## Requirements
+
+This resource depends on the following. Make sure they are installed and **started before** `lb-app-where-are-you` in your `server.cfg`:
+
+| Resource   | Minimum version | Notes                                                                |
+| ---------- | --------------- | -------------------------------------------------------------------- |
+| `lb-phone` | **v2.7.0**      | The map uses lb-phone's built-in `GameMap` component (added in v2.7.0). Older versions cannot render the map. |
+| `ox_lib`   | latest          | Used for UI localization (`lib.getLocales()`). If it is missing or too old, all UI text shows as raw keys (e.g. `timeline.post_btn`). |
+| `oxmysql`  | latest          | Database access. Run `sql.sql` against this database (see step 2 below). |
+
+Recommended start order:
+
+```cfg
+ensure ox_lib
+ensure oxmysql
+ensure lb-phone
+ensure lb-app-where-are-you
+```
+
+> **Note:** The `### Install dependencies` step further down is only for the React UI build (`npm install`) and is unrelated to these server-side resource dependencies.
+
 ## Installation
 
 ### 1. Place the release ZIP
