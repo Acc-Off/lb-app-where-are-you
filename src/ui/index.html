@@ -8,11 +8,18 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-  <!-- Early capture: register before the async JS bundle loads so appOpen/appClose
-       messages sent by lb-phone (onUse callback) are not lost while the bundle fetches. -->
+  <!-- Early capture: バンドル評価より前にこのインラインを張ることで、lb-phone が送る
+       appOpen/appClose/componentsLoaded を取りこぼさず受け、グローバルフラグに保持する。
+       これらは React マウント前（componentsLoaded は t≈400ms）に届くため、AppShell の useEffect で
+       購読すると登録が間に合わない。AppShell はここで保持したフラグを初期値として読む
+       （getInitialAppOpenState / getInitialComponentsLoaded）。
+       特に lb-phone は高負荷時などに appOpen を取りこぼすことがあり、その場合でも componentsLoaded で
+       初期化を成立させる。詳細は docs/plan/other_memo/appOpenメモ.md。 -->
   <script>
     window.__wayAppIsOpen = false;
+    window.__wayComponentsLoaded = false;
     window.addEventListener('message', function(e) {
+      if (e.data === 'componentsLoaded') { window.__wayComponentsLoaded = true; }
       if (e.data && typeof e.data === 'object') {
         if (e.data.action === 'appOpen')  { window.__wayAppIsOpen = true; }
         if (e.data.action === 'appClose') { window.__wayAppIsOpen = false; }

@@ -2,7 +2,10 @@
  * エントリーポイント。
  * FiveMインゲーム内では lb-phone が 'componentsLoaded' イベントを発火するまで待機してから
  * Reactアプリを描画する。デビューモード（Vite dev server）では即時描画する。
- * 重複描画防止のため rendered フラグと setTimeout(300ms)フォールバックを使用。
+ * 重複描画防止のため rendered フラグを使用する。
+ *
+ * setTimeout(300ms) フォールバックは、背景復帰時に 'componentsLoaded' が来ないバージョン対策。
+ * その場合でも描画されるよう、一定時間後に必ず描画する。
  */
 import React from 'react'
 import ReactDOM from 'react-dom/client'

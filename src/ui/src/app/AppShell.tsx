@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { fetchNuiCallback, getInitialAppOpenState, useAppEvent } from '../utils/nui'
+import { fetchNuiCallback, getInitialAppOpenState, getInitialComponentsLoaded, useAppEvent } from '../utils/nui'
 import {
     clampPosition,
     MAP_BOUNDS,
@@ -110,7 +110,8 @@ export function AppShell() {
     // モジュールレベルで捕捉した appOpen/appClose を初期値として使う。
     // lb-phone は React マウントより前に appOpen を送信するため、
     // nui.ts の早期リスナで受け取った状態を初期値に設定する。
-    const [isAppOpen, setIsAppOpen] = useState(() => getInitialAppOpenState())
+    // appOpen を取りこぼしても、componentsLoaded 受信済みなら初期化を走らせる（マウント前の取りこぼし対策）。
+    const [isAppOpen, setIsAppOpen] = useState(() => getInitialAppOpenState() || getInitialComponentsLoaded())
 
     const detailDialogRef = useRef<HTMLDialogElement>(null)
     const confirmDialogRef = useRef<HTMLDialogElement>(null)
@@ -242,6 +243,27 @@ export function AppShell() {
         setIsAppOpen(true)
     })
     useAppEvent('appClose', () => { setIsAppOpen(false) })
+
+    // NOTE(lb-phone-workaround): lb-phone は高負荷時などに appOpen を送らないことがある
+    //   （注入と componentsLoaded は届くが appOpen だけ取りこぼす。詳細は docs/plan/other_memo/appOpenメモ.md）。
+    //   appOpen 受信だけを初期化トリガにすると isAppOpen が false のままで getBootstrap を pull せず、
+    //   locale が空（キー表示）・地図未初期化になる。
+    //   componentsLoaded は表示中の本物 iframe には開くたびに必ず届く（プリロード用 iframe には届かない）ため、
+    //   これも初期化トリガに使い、appOpen 非依存で初期データ取得を成立させる。
+    //   componentsLoaded は React マウント前（t≈400ms）に届くため、初回ぶんは isAppOpen の初期値
+    //   （getInitialComponentsLoaded）で拾う。このリスナはマウント後に届く分の保険。
+    //   componentsLoaded は action プロパティを持たない文字列メッセージのため useAppEvent では拾えず、
+    //   直接 message を購読する。
+    useEffect(() => {
+        const handler = (event: MessageEvent) => {
+            if (event.data === 'componentsLoaded') {
+                document.body.style.visibility = 'visible'
+                setIsAppOpen(true)
+            }
+        }
+        window.addEventListener('message', handler)
+        return () => window.removeEventListener('message', handler)
+    }, [])
 
     useAppEvent('selfPosition', (position: PositionPayload) => {
         if (!position) return

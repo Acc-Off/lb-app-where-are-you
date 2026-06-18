@@ -21,8 +21,17 @@ const devMode = !window?.invokeNative
 let _appIsOpen: boolean = typeof window !== 'undefined'
     ? Boolean((window as any).__wayAppIsOpen)
     : false
+// lb-phone が appOpen を取りこぼしても初期化できるよう、componentsLoaded 受信済みかを保持する。
+// index.html の early-capture が最速で __wayComponentsLoaded を立てるため、その値を初期値に使う。
+let _componentsLoaded: boolean = typeof window !== 'undefined'
+    ? Boolean((window as any).__wayComponentsLoaded)
+    : false
 if (typeof window !== 'undefined' && !devMode) {
     window.addEventListener('message', (e: MessageEvent) => {
+        if (e.data === 'componentsLoaded') {
+            _componentsLoaded = true
+            ;(window as any).__wayComponentsLoaded = true
+        }
         if (e.data && typeof e.data === 'object') {
             if (e.data.action === 'appOpen')  {
                 _appIsOpen = true
@@ -38,6 +47,15 @@ if (typeof window !== 'undefined' && !devMode) {
 
 export function getInitialAppOpenState(): boolean {
     return _appIsOpen
+}
+
+/**
+ * componentsLoaded を既に受信済みかを返す。
+ * lb-phone が appOpen を取りこぼしても、componentsLoaded（表示中 iframe には開くたびに届く）で
+ * 初期化を成立させるために使う。
+ */
+export function getInitialComponentsLoaded(): boolean {
+    return _componentsLoaded
 }
 
 /**
